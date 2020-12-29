@@ -96,11 +96,11 @@ for index, row in pdf.iterrows():
             ResultRow = spark.read.json(sc.parallelize([ResultStatus])).select("TargetTable", "LastRefreshDate", "ErrorFlag", "ReturnMessage")
         except:
             # If notebook didn't not return parms an error occured and set the error flag
-            ResultRow = spark.createDataFrame([(rTargetTable,BatchTime, 1, "Error")], ResultColumns)
+            ResultRow = spark.createDataFrame([(rTargetTable,rLastRefreshDate, 1, "Error")], ResultColumns)
 
     except:
         # Notebook did not exist
-        ResultRow = spark.createDataFrame([(rTargetTable,BatchTime, 1, "Missing notebook")], ResultColumns)
+        ResultRow = spark.createDataFrame([(rTargetTable,rLastRefreshDate, 1, "Missing notebook")], ResultColumns)
         
     ResultDF = ResultDF.union(ResultRow)
         
